@@ -5,10 +5,10 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { createServer } from 'http';
 import multer from 'multer';
-import AuthRoute from './backend/router/auth.router.js';
-import CategoryRoute from './backend/router/category.router.js';
-import ProductRoute from './backend/router/product.router.js';
-import WishlistRouter from './backend/router/wishlist.router.js';
+import AuthRoute from './router/auth.router.js';
+import CategoryRoute from './router/category.router.js';
+import ProductRoute from './router/product.router.js';
+import WishlistRouter from './router/wishlist.router.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
