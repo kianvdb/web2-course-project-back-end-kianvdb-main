@@ -44,6 +44,11 @@ app.use('/api/category', CategoryRoute);
 app.use('/api/products', ProductRoute);
 app.use('/api/wishlist', WishlistRouter);
 
+// Root route to handle GET requests to '/'
+app.get('/', (req, res) => {
+    res.send('Welcome to the API!');
+});
+
 const httpServer = createServer(app);
 
 httpServer.listen(PORT, () => {
