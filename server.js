@@ -46,7 +46,7 @@ app.use('/api/wishlist', WishlistRouter);
 
 // Root route to handle GET requests to '/'
 app.get('/', (req, res) => {
-    res.send('Welcome to the API!');
+    res.send('Welkom bij de API! gebruik de juiste endpoints');
 });
 
 const httpServer = createServer(app);
