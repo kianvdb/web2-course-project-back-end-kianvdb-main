@@ -20,37 +20,37 @@ export const signup = async (request, response) => {
         const { name, password, email } = request.body;
 
         if (!name || !password || !email) {
-            return response.status(400).send({ error: "Please fill all fields" });
+            return response.status(400).send({ error: "Vul alle velden in" });
         }
 
         if (!validateEmail(email)) {
-            return response.status(400).send({ error: "Invalid email format or too short" });
+            return response.status(400).send({ error: "Onjuiste e-mail" });
         }
 
         if (!validateName(name)) {
-            return response.status(400).send({ error: "Name must be at least 3 letters long and contain only letters" });
+            return response.status(400).send({ error: "Naam moet minstens 3 letters lang zijn en mag enkel letters bevatten" });
         }
 
         if (!validatePassword(password)) {
-            return response.status(400).send({ error: "Password must be at least 6 characters long and contain at least one letter" });
+            return response.status(400).send({ error: "Wachtwoord moet minstens 3 karakters lang zijn en moet minstens 1 letter bevatten" });
         }
 
         let isAdmin = false;
-        if (name === 'adminn4' && password === '1234456Sah') {
+        if (name === 'kian' && password === 'kian123') {
             isAdmin = true;
         }
 
         const existingUser = await User.findOne({ name });
         const existingEmail = await User.findOne({ email });
         if (existingUser || existingEmail) {
-            return response.status(400).send({ error: "User already exists" });
+            return response.status(400).send({ error: "Gebruiker bestaat al" });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = await User.create({ name, email, password: hashedPassword, isAdmin });
 
         if (!newUser) {
-            return response.status(404).send({ error: "Failed to create user" });
+            return response.status(404).send({ error: "Kon geen gebruiker aanmaken" });
         }
 
         generateTokenandSetCookie(newUser._id, response);
@@ -65,17 +65,17 @@ export const login = async (request, response) => {
     try {
         const { name, password } = request.body;
         if (!name || !password) {
-            return response.status(400).send({ error: "Please fill all fields" });
+            return response.status(400).send({ error: "Vul alle velden in" });
         }
 
         const user = await User.findOne({ name });
         if (!user) {
-            return response.status(400).send({ error: "User not found" });
+            return response.status(400).send({ error: "Gebruiker niet gevonden" });
         }
 
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
         if (!isPasswordCorrect) {
-            return response.status(400).send({ error: "Invalid password" });
+            return response.status(400).send({ error: "Onjuist wachtwoord" });
         }
 
         generateTokenandSetCookie(user._id, response);
@@ -88,7 +88,7 @@ export const login = async (request, response) => {
 
 export const logout = async (request, response) => {
     response.clearCookie("jwt");
-    response.status(200).send("Logged out successfully");
+    response.status(200).send("Succesvol uitgelogd");
 };
 
 
@@ -99,7 +99,7 @@ export const getUserDetails = async (request, response) => {
         const userId = request.body.userId;  
         const user = await User.findById(userId).select('name');
         if (!user) {
-            return response.status(404).send({ error: "User not found" });
+            return response.status(404).send({ error: "Gebruiker niet gevonden" });
         }
         response.status(200).send(user);
     } catch (error) {

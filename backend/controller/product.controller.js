@@ -11,12 +11,12 @@ export const createProduct = async (req, res) => {
         const additionalPictures = req.files['additionalPictures'] ? req.files['additionalPictures'].map(file => file.path) : [];
 
         if (!name || !duur || !kosten || !moeilijkheid || !inleid || !ranking || !category) {
-            return res.status(400).send({ error: "Please fill all required fields" });
+            return res.status(400).send({ error: "Vul alle velden in" });
         }
 
         const categoryDoc = await Category.findOne({ categoryName: category });
         if (!categoryDoc) {
-            return res.status(404).send({ error: "Category not found" });
+            return res.status(404).send({ error: "Categorie niet gevonden" });
         }
 
         const newProduct = new Product({
@@ -48,7 +48,7 @@ export const updateProduct = async (req, res) => {
 
         const categoryDoc = await Category.findOne({ categoryName: category });
         if (!categoryDoc) {
-            return res.status(404).send({ error: "Category not found" });
+            return res.status(404).send({ error: "Categorie niet gevonden" });
         }
 
         const updatedProduct = await Product.findByIdAndUpdate(
@@ -68,7 +68,7 @@ export const updateProduct = async (req, res) => {
         );
 
         if (!updatedProduct) {
-            return res.status(404).send({ error: "Product not found" });
+            return res.status(404).send({ error: "Project niet gevonden" });
         }
 
         res.status(200).send(updatedProduct);
@@ -80,7 +80,7 @@ export const updateProduct = async (req, res) => {
 
 export const getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find().populate('category');
+        const products = await Product.find().populate('categorie');
         res.status(200).json(products);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -90,8 +90,8 @@ export const getAllProducts = async (req, res) => {
 export const getSingleProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const product = await Product.findById(id).populate('category');
-        if (!product) return res.status(404).json({ message: 'Product not found' });
+        const product = await Product.findById(id).populate('categorie');
+        if (!product) return res.status(404).json({ message: 'Project niet gevonden' });
         res.status(200).json(product);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -106,8 +106,8 @@ export const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
         const deletedProduct = await Product.findByIdAndDelete(id);
-        if (!deletedProduct) return res.status(404).json({ message: 'Product not found' });
-        res.status(200).json({ message: 'Product deleted successfully' });
+        if (!deletedProduct) return res.status(404).json({ message: 'Project niet gevonden' });
+        res.status(200).json({ message: 'Project succesvol verwijderd' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
